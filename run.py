@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Live Graph System Launcher
-Simple launcher script to run different components of the system
+🧅 Live Graph System - Onion Scraper Launcher
+Advanced onion site scraping with Tor integration and graph visualization
 """
 
 import os
@@ -15,17 +15,18 @@ def get_project_root():
     return Path(__file__).parent
 
 def run_web_interface():
-    """Launch the complete web interface with both scraper and visualization"""
+    """Launch the complete onion scraper web interface with visualization"""
     import threading
     import time
 
-    print("🚀 Starting Live Graph System Web Interface...")
+    print("🧅 Starting Live Graph System - Onion Scraper Interface...")
     print("📊 Starting graph visualization server...")
-    print("🕷️  Starting web scraper interface...")
+    print("🕷️  Starting onion scraper web interface...")
     print()
-    print("📍 Web Interface: http://localhost:5000")
+    print("📍 Onion Scraper Interface: http://localhost:5000")
     print("📍 Graph Visualization: http://localhost:8001")
-    print("💡 The web interface includes an embedded graph visualization")
+    print("🧅 Features: Built-in Onion Scraper, TOC, OnionSearch, TorBot")
+    print("🔒 Tor Integration: Automatic proxy detection and fallback")
     print("⏹️  Press Ctrl+C to stop both services")
     print()
 
@@ -57,14 +58,25 @@ def run_web_interface():
         print("✅ Graph visualization server stopped")
 
 def run_cli():
-    """Launch the CLI interface"""
+    """Launch the onion scraper CLI interface"""
     interfaces_dir = get_project_root() / "backend" / "interfaces"
     os.chdir(interfaces_dir)
 
-    print("🚀 Starting CLI Interface...")
+    print("🧅 Starting Onion Scraper CLI Interface...")
+    print("🔒 Features: Built-in scraper, TOC, OnionSearch, TorBot")
+    print("💡 Type 'help' for available commands")
     subprocess.run([sys.executable, "scraper_cli.py", "--interactive"])
 
+def run_builtin_scraper(url):
+    """Run built-in onion scraper directly"""
+    interfaces_dir = get_project_root() / "backend" / "interfaces"
+    os.chdir(interfaces_dir)
 
+    print("🧅 Starting Built-in Onion Scraper...")
+    print(f"📍 Target URL: {url}")
+    print("🔒 Using built-in Tor integration")
+
+    subprocess.run([sys.executable, "scraper_cli.py", "--builtin", url])
 
 def run_toc_crawler(url):
     """Run TOC onion crawler directly"""
@@ -273,19 +285,19 @@ def setup_system():
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Live Graph System Launcher",
+        description="🧅 Live Graph System - Onion Scraper Launcher",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   python run.py --setup                    # Setup the system (first time)
-  python run.py --web                      # Complete web interface with scraper and graph
+  python run.py --web                      # Complete onion scraper web interface
   python run.py --cli                      # Command-line interface
 
 Onion Scraper Direct Usage:
+  python run.py --builtin "http://example.onion"       # Built-in Onion Scraper (Primary)
   python run.py --toc "http://example.onion"           # TOC Onion Crawler
   python run.py --onionsearch "privacy tools"          # OnionSearch Engine
-  python run.py --torbot "https://example.com"         # TorBot OSINT Crawler
-  python run.py --torbot "http://example.onion" --depth 3  # TorBot with custom depth
+  python run.py --torbot "http://example.onion"        # TorBot OSINT Crawler
   python run.py --check-deps                           # Check all dependencies
         """
     )
@@ -293,17 +305,19 @@ Onion Scraper Direct Usage:
     parser.add_argument("--setup", action="store_true",
                        help="Setup the system (install dependencies)")
     parser.add_argument("--web", action="store_true",
-                       help="Launch complete web interface (scraper + graph visualization)")
+                       help="Launch complete onion scraper web interface")
     parser.add_argument("--cli", action="store_true",
-                       help="Launch CLI interface")
+                       help="Launch onion scraper CLI interface")
 
     # Onion scraper arguments
+    parser.add_argument("--builtin", type=str, metavar="URL",
+                       help="Run built-in onion scraper on specified .onion URL (Primary)")
     parser.add_argument("--toc", type=str, metavar="URL",
                        help="Run TOC onion crawler on specified .onion URL")
     parser.add_argument("--onionsearch", type=str, metavar="QUERY",
                        help="Run OnionSearch engine with specified search query")
     parser.add_argument("--torbot", type=str, metavar="URL",
-                       help="Run TorBot OSINT crawler on specified URL")
+                       help="Run TorBot OSINT crawler on specified .onion URL")
     parser.add_argument("--depth", type=int, default=2, metavar="N",
                        help="Crawl depth for TorBot (default: 2)")
     parser.add_argument("--check-deps", action="store_true",
@@ -317,6 +331,8 @@ Onion Scraper Direct Usage:
         run_web_interface()
     elif args.cli:
         run_cli()
+    elif args.builtin:
+        run_builtin_scraper(args.builtin)
     elif args.toc:
         success = run_toc_crawler(args.toc)
         sys.exit(0 if success else 1)
@@ -329,20 +345,21 @@ Onion Scraper Direct Usage:
     elif args.check_deps:
         check_dependencies()
     else:
-        print("🌟 Live Graph System Launcher")
+        print("🧅 Live Graph System - Onion Scraper Launcher")
         print("=" * 50)
         print("Choose an option:")
         print("1. Setup system (first time)")
-        print("2. Complete web interface (scraper + graph visualization)")
-        print("3. CLI interface")
-        print("4. TOC Onion Crawler (direct)")
-        print("5. OnionSearch Engine (direct)")
-        print("6. TorBot OSINT Crawler (direct)")
-        print("7. Check dependencies")
-        print("8. Exit")
+        print("2. Complete onion scraper web interface")
+        print("3. Onion scraper CLI interface")
+        print("4. Built-in Onion Scraper (direct)")
+        print("5. TOC Onion Crawler (direct)")
+        print("6. OnionSearch Engine (direct)")
+        print("7. TorBot OSINT Crawler (direct)")
+        print("8. Check dependencies")
+        print("9. Exit")
 
         while True:
-            choice = input("\nEnter choice (1-8): ").strip()
+            choice = input("\nEnter choice (1-9): ").strip()
 
             if choice == "1":
                 setup_system()
@@ -356,34 +373,41 @@ Onion Scraper Direct Usage:
             elif choice == "4":
                 url = input("Enter .onion URL: ").strip()
                 if url:
-                    run_toc_crawler(url)
+                    run_builtin_scraper(url)
                 else:
-                    print("❌ URL required")
+                    print("❌ .onion URL required")
                 break
             elif choice == "5":
+                url = input("Enter .onion URL: ").strip()
+                if url:
+                    run_toc_crawler(url)
+                else:
+                    print("❌ .onion URL required")
+                break
+            elif choice == "6":
                 query = input("Enter search query: ").strip()
                 if query:
                     run_onionsearch(query)
                 else:
                     print("❌ Search query required")
                 break
-            elif choice == "6":
-                url = input("Enter target URL: ").strip()
+            elif choice == "7":
+                url = input("Enter .onion URL: ").strip()
                 if url:
                     depth_input = input("Enter crawl depth (default 2): ").strip()
                     depth = int(depth_input) if depth_input.isdigit() else 2
                     run_torbot(url, depth)
                 else:
-                    print("❌ URL required")
-                break
-            elif choice == "7":
-                check_dependencies()
+                    print("❌ .onion URL required")
                 break
             elif choice == "8":
+                check_dependencies()
+                break
+            elif choice == "9":
                 print("👋 Goodbye!")
                 break
             else:
-                print("❌ Invalid choice. Please enter 1-8.")
+                print("❌ Invalid choice. Please enter 1-9.")
 
 if __name__ == "__main__":
     main()

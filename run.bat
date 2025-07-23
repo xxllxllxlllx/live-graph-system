@@ -1,10 +1,10 @@
 @echo off
-REM Live Graph System Launcher for Windows
-REM Enhanced batch file with onion scraper support
+REM 🧅 Live Graph System - Onion Scraper Launcher for Windows
+REM Enhanced batch file with comprehensive onion scraper support
 
 echo.
 echo ========================================
-echo   Live Graph System Launcher
+echo   🧅 Live Graph System - Onion Scraper
 echo ========================================
 echo.
 
@@ -21,6 +21,7 @@ if errorlevel 1 (
 REM Check for special onion scraper arguments
 if "%1"=="--help" goto show_help
 if "%1"=="-h" goto show_help
+if "%1"=="--builtin" goto run_builtin
 if "%1"=="--toc" goto run_toc
 if "%1"=="--onionsearch" goto run_onionsearch
 if "%1"=="--torbot" goto run_torbot
@@ -33,26 +34,28 @@ goto end
 :show_help
 echo.
 echo ========================================
-echo   Live Graph System - Usage Guide
+echo   🧅 Live Graph System - Usage Guide
 echo ========================================
 echo.
 echo Standard Usage:
 echo   run.bat                    Start interactive launcher
-echo   run.bat --web              Start web interface directly
+echo   run.bat --web              Start onion scraper web interface
 echo.
 echo Onion Scraper Direct Usage:
+echo   run.bat --builtin "URL"    Built-in Onion Scraper (Primary)
 echo   run.bat --toc "URL"        TOC Onion Crawler
 echo   run.bat --onionsearch "QUERY"  OnionSearch Engine
 echo   run.bat --torbot "URL"     TorBot OSINT Crawler
 echo   run.bat --check-deps       Check all dependencies
 echo.
 echo Examples:
+echo   run.bat --builtin "http://duckduckgogg42ts72.onion"
 echo   run.bat --toc "http://example.onion"
 echo   run.bat --onionsearch "privacy tools"
-echo   run.bat --torbot "https://example.com"
-echo   run.bat --torbot "http://example.onion" 3
+echo   run.bat --torbot "http://example.onion"
 echo.
 echo Requirements:
+echo   Built-in:       Python 3.7+, automatic Tor integration
 echo   TOC Crawler:    Go 1.19+, TOR proxy (127.0.0.1:9050)
 echo   OnionSearch:    Python packages (requests, bs4, PySocks, tqdm)
 echo   TorBot:         Python packages (httpx, treelib, tabulate, toml)
@@ -60,6 +63,38 @@ echo.
 echo For detailed setup: run.bat --check-deps
 echo.
 pause
+goto end
+
+:run_builtin
+echo.
+echo ========================================
+echo   Built-in Onion Scraper (Direct Mode)
+echo ========================================
+echo.
+
+if "%2"=="" (
+    echo ERROR: Please provide a .onion URL
+    echo Usage: run.bat --builtin "http://example.onion"
+    echo Example: run.bat --builtin "http://duckduckgogg42ts72.onion"
+    echo.
+    pause
+    exit /b 1
+)
+
+echo.
+echo Starting Built-in Onion Scraper...
+echo Target URL: %2
+echo Using built-in Tor integration with automatic fallback
+echo.
+
+python run.py --builtin %2
+if errorlevel 1 (
+    echo ERROR: Built-in onion scraper failed
+    pause
+    exit /b 1
+)
+
+echo ✅ Built-in onion scraping completed successfully
 goto end
 
 :run_toc
