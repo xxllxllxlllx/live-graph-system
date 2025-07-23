@@ -687,7 +687,6 @@ class OnionScraperRunner:
         try:
             if not os.path.exists(csv_filepath):
                 logger.error(f"CSV file not found: {csv_filepath}")
-                logger.debug(f"DEBUG: Returning False for missing file: {csv_filepath}")
                 return False
 
             converter = OnionSearchConverter(search_query)
@@ -703,9 +702,7 @@ class OnionScraperRunner:
     def run_toc_crawler(self, url):
         """Run TOC crawler (alias for run_toc_main for test compatibility)"""
         try:
-            logger.debug(f"DEBUG: run_toc_crawler called with {url}")
             result = self.run_toc_main(url)
-            logger.debug(f"DEBUG: run_toc_main returned {result}")
             # Return True if we got a file path (including mock data)
             return result is not None and result != ""
         except Exception as e:
@@ -923,7 +920,6 @@ class OnionScraperRunner:
     def run_toc_main(self, starting_url: str, output_file: str = None) -> Optional[str]:
         """Run toc-main crawler via Tor on popular onion sites"""
         try:
-            logger.debug(f"DEBUG: run_toc_main called with {starting_url}")
             # Detect if we're in a test environment
             import sys
             import inspect
@@ -952,12 +948,12 @@ class OnionScraperRunner:
                 finally:
                     del frame
 
-            logger.debug(f"DEBUG: is_test = {is_test}, sys.modules keys = {list(sys.modules.keys())[:10]}")
+
 
             if is_test:
                 # We're in a test environment, use subprocess for compatibility
                 import subprocess
-                logger.debug(f"DEBUG: In test mode, calling subprocess.run")
+
                 # Use a command that will be mocked by the test
                 result = subprocess.run(['go', 'run', 'main.go', '-url', starting_url], capture_output=True, text=True)
                 if result.returncode == 0:
