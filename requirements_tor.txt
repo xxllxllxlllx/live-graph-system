@@ -1,0 +1,21 @@
+# Tor Integration Requirements
+# Install with: pip install -r requirements_tor.txt
+
+# Core dependencies
+requests>=2.25.0
+requests[socks]>=2.25.0
+
+# SOCKS proxy support
+PySocks>=1.7.1
+
+# Additional dependencies for onion scraping
+beautifulsoup4>=4.9.0
+lxml>=4.6.0
+
+# Optional: For better SSL/TLS support with onion sites
+urllib3>=1.26.0
+certifi>=2021.5.30
+
+# For async operations (if needed)
+aiohttp>=3.7.0
+aiohttp[speedups]>=3.7.0

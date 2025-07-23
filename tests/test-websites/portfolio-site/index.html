@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Chen - Full Stack Developer & Tech Innovator Portfolio</title>
+    <meta name="description" content="Portfolio of Alex Chen, a full stack developer specializing in web applications, mobile development, and innovative technology solutions.">
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 0; background: #1a1a1a; color: #ffffff; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 80px 20px; text-align: center; }
+        nav { background: #2c3e50; padding: 15px 20px; position: sticky; top: 0; z-index: 100; }
+        nav a { color: white; text-decoration: none; margin-right: 30px; font-weight: 500; }
+        nav a:hover { color: #3498db; }
+        .section { padding: 60px 20px; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; }
+        .project-card { background: #2c3e50; padding: 30px; border-radius: 10px; border: 1px solid #34495e; }
+        .project-card h3 { color: #3498db; margin-bottom: 15px; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .tech-tag { background: #3498db; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.8em; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .skill-category { background: #34495e; padding: 25px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Alex Chen</h1>
+            <p>Full Stack Developer & Tech Innovator</p>
+            <p>Crafting digital experiences with cutting-edge technology</p>
+        </header>
+        
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="skills.html">Skills</a>
+            <a href="experience.html">Experience</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="../index.html">Tech News</a>
+        </nav>
+        
+        <div class="section">
+            <h2>Featured Projects</h2>
+            <p>A showcase of my latest work in web development, mobile applications, and innovative tech solutions.</p>
+            
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3><a href="ecommerce-platform.html" style="color: #3498db;">E-Commerce Platform</a></h3>
+                    <p>Full-stack e-commerce solution with real-time inventory management, payment processing, and analytics dashboard.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Stripe API</span>
+                    </div>
+                    <p><a href="ecommerce-demo.html">Live Demo</a> | <a href="ecommerce-code.html">Source Code</a></p>
+                </div>
+                
+                <div class="project-card">
+                    <h3><a href="ai-chatbot.html" style="color: #3498db;">AI-Powered Chatbot</a></h3>
+                    <p>Intelligent customer service chatbot using natural language processing and machine learning algorithms.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">TensorFlow</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">OpenAI API</span>
+                    </div>
+                    <p><a href="chatbot-demo.html">Try It Out</a> | <a href="../documentation-site/ai-apis.html">API Docs</a></p>
+                </div>
+                
+                <div class="project-card">
+                    <h3><a href="mobile-fitness-app.html" style="color: #3498db;">Mobile Fitness Tracker</a></h3>
+                    <p>Cross-platform mobile app for fitness tracking with social features and personalized workout plans.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Redux</span>
+                        <span class="tech-tag">Health APIs</span>
+                    </div>
+                    <p><a href="fitness-app-details.html">Project Details</a> | <a href="app-store-link.html">Download</a></p>
+                </div>
+                
+                <div class="project-card">
+                    <h3><a href="data-visualization.html" style="color: #3498db;">Data Visualization Dashboard</a></h3>
+                    <p>Interactive dashboard for business analytics with real-time data processing and custom chart components.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                    </div>
+                    <p><a href="dashboard-demo.html">View Dashboard</a> | <a href="../blog-site/data-visualization.html">Blog Post</a></p>
+                </div>
+                
+                <div class="project-card">
+                    <h3><a href="blockchain-voting.html" style="color: #3498db;">Blockchain Voting System</a></h3>
+                    <p>Secure and transparent voting platform built on blockchain technology with smart contracts.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Solidity</span>
+                        <span class="tech-tag">Web3.js</span>
+                        <span class="tech-tag">Ethereum</span>
+                        <span class="tech-tag">React</span>
+                    </div>
+                    <p><a href="voting-demo.html">Demo</a> | <a href="blockchain-whitepaper.html">Technical Paper</a></p>
+                </div>
+                
+                <div class="project-card">
+                    <h3><a href="iot-home-automation.html" style="color: #3498db;">IoT Home Automation</a></h3>
+                    <p>Smart home system with voice control, automated scheduling, and energy monitoring capabilities.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Arduino</span>
+                        <span class="tech-tag">Raspberry Pi</span>
+                        <span class="tech-tag">MQTT</span>
+                        <span class="tech-tag">Node.js</span>
+                    </div>
+                    <p><a href="iot-details.html">Technical Details</a> | <a href="home-automation-guide.html">Setup Guide</a></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" style="background: #2c3e50;">
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Frontend Development</h3>
+                    <ul>
+                        <li><a href="javascript-projects.html">JavaScript/TypeScript</a></li>
+                        <li><a href="react-projects.html">React & Redux</a></li>
+                        <li><a href="vue-projects.html">Vue.js & Vuex</a></li>
+                        <li><a href="css-projects.html">CSS3 & Sass</a></li>
+                        <li><a href="responsive-design.html">Responsive Design</a></li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Backend Development</h3>
+                    <ul>
+                        <li><a href="nodejs-projects.html">Node.js & Express</a></li>
+                        <li><a href="python-projects.html">Python & Django</a></li>
+                        <li><a href="database-projects.html">MongoDB & PostgreSQL</a></li>
+                        <li><a href="api-projects.html">RESTful APIs</a></li>
+                        <li><a href="microservices.html">Microservices Architecture</a></li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Mobile Development</h3>
+                    <ul>
+                        <li><a href="react-native-apps.html">React Native</a></li>
+                        <li><a href="ios-development.html">iOS Development</a></li>
+                        <li><a href="android-development.html">Android Development</a></li>
+                        <li><a href="flutter-projects.html">Flutter</a></li>
+                        <li><a href="mobile-ui-ux.html">Mobile UI/UX</a></li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Emerging Technologies</h3>
+                    <ul>
+                        <li><a href="ai-ml-projects.html">AI & Machine Learning</a></li>
+                        <li><a href="blockchain-projects.html">Blockchain Development</a></li>
+                        <li><a href="iot-projects.html">IoT Solutions</a></li>
+                        <li><a href="cloud-projects.html">Cloud Computing</a></li>
+                        <li><a href="devops-projects.html">DevOps & CI/CD</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Professional Experience</h2>
+            <ul>
+                <li><a href="senior-developer-role.html">Senior Full Stack Developer</a> - TechCorp (2022-Present)</li>
+                <li><a href="lead-developer-role.html">Lead Frontend Developer</a> - StartupXYZ (2020-2022)</li>
+                <li><a href="fullstack-developer-role.html">Full Stack Developer</a> - WebSolutions Inc. (2018-2020)</li>
+                <li><a href="junior-developer-role.html">Junior Developer</a> - CodeFactory (2017-2018)</li>
+            </ul>
+            
+            <h3>Certifications & Education</h3>
+            <ul>
+                <li><a href="aws-certification.html">AWS Certified Solutions Architect</a></li>
+                <li><a href="google-cloud-cert.html">Google Cloud Professional Developer</a></li>
+                <li><a href="computer-science-degree.html">B.S. Computer Science</a> - Tech University</li>
+                <li><a href="bootcamp-certificate.html">Full Stack Web Development Bootcamp</a></li>
+            </ul>
+        </div>
+        
+        <div class="section" style="background: #34495e;">
+            <h2>Connect & Collaborate</h2>
+            <p>Interested in working together or discussing technology? Let's connect!</p>
+            <ul>
+                <li><a href="contact.html">Contact Information</a></li>
+                <li><a href="resume.html">Download Resume</a></li>
+                <li><a href="testimonials.html">Client Testimonials</a></li>
+                <li><a href="collaboration.html">Collaboration Opportunities</a></li>
+            </ul>
+            
+            <h3>External Links</h3>
+            <ul>
+                <li><a href="../blog-site/index.html">Personal Tech Blog</a></li>
+                <li><a href="../documentation-site/index.html">Open Source Documentation</a></li>
+                <li><a href="../corporate-site/team.html">Corporate Team Profile</a></li>
+                <li><a href="../news-site/tech-section.html">Tech News Contributions</a></li>
+                <li><a href="../index.html">Technology News Coverage</a></li>
+            </ul>
+        </div>
+        
+        <footer style="background: #1a1a1a; padding: 40px 20px; text-align: center;">
+            <p>&copy; 2025 Alex Chen. All rights reserved.</p>
+            <p>
+                <a href="privacy.html" style="color: #3498db;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #3498db;">Terms of Use</a> | 
+                <a href="sitemap.html" style="color: #3498db;">Sitemap</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

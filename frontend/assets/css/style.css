@@ -1,0 +1,107 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  min-height: 100vh;
+}
+
+/* Main graph container */
+#graph-container {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background-color: #ffffff;
+  margin: 0 auto;
+}
+
+/* SVG container styling */
+#graph-container svg {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+/* Node styling - matching original OSINT Framework */
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 12px;
+  fill: rgb(0, 0, 0);
+}
+
+/* Link styling - matching original OSINT Framework */
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  #graph-container svg {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .node text {
+    font-size: 10px;
+  }
+
+  .node circle {
+    stroke-width: 1px;
+  }
+
+  #graph-container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .node text {
+    font-size: 9px;
+  }
+
+  .node circle {
+    r: 4;
+  }
+}
+
+/* Clean, minimal scrollbar if needed */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}

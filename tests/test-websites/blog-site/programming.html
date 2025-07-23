@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Articles - TechThoughts Blog</title>
+    <meta name="description" content="Programming tutorials, best practices, and insights on software development, coding techniques, and developer tools.">
+    <style>
+        body { font-family: Georgia, serif; margin: 0; padding: 0; background: #fafafa; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; background: white; min-height: 100vh; }
+        header { background: #2c3e50; color: white; padding: 30px; text-align: center; }
+        nav { background: #34495e; padding: 15px; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; }
+        .content { padding: 40px; }
+        .post { border-bottom: 2px solid #eee; padding-bottom: 30px; margin-bottom: 40px; }
+        .post-meta { color: #666; font-size: 0.9em; margin-bottom: 15px; }
+        .code-snippet { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 15px 0; overflow-x: auto; font-family: 'Courier New', monospace; }
+        .breadcrumb { background: #e9ecef; padding: 10px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Blog Home</a> > Programming
+        </div>
+        
+        <header>
+            <h1>Programming Articles</h1>
+            <p>Code, learn, and grow together</p>
+        </header>
+        
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="programming.html">Programming</a>
+            <a href="tech-opinions.html">Tech Opinions</a>
+            <a href="tutorials.html">Tutorials</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="about.html">About</a>
+        </nav>
+        
+        <div class="content">
+            <article class="post">
+                <h2><a href="python-performance-tips.html">Python Performance Optimization Tips</a></h2>
+                <div class="post-meta">Published on March 10, 2025 | By Sarah Chen | <a href="python-posts.html">Python</a>, <a href="performance-posts.html">Performance</a></div>
+                <p>Python is known for its simplicity and readability, but sometimes we need to squeeze out extra performance. Here are my top tips for optimizing Python code without sacrificing readability.</p>
+                
+                <div class="code-snippet">
+# Use list comprehensions instead of loops
+# Slow
+result = []
+for i in range(1000):
+    if i % 2 == 0:
+        result.append(i * 2)
+
+# Fast
+result = [i * 2 for i in range(1000) if i % 2 == 0]
+                </div>
+                
+                <p><a href="python-performance-tips.html">Read full article →</a></p>
+                <p><strong>Related:</strong> <a href="../documentation-site/python-examples.html">Python Examples</a> | <a href="../corporate-site/python-development.html">Python Services</a></p>
+            </article>
+            
+            <article class="post">
+                <h2><a href="javascript-async-patterns.html">Modern JavaScript Async Patterns</a></h2>
+                <div class="post-meta">Published on March 8, 2025 | By Mike Rodriguez | <a href="javascript-posts.html">JavaScript</a></div>
+                <p>Asynchronous programming in JavaScript has evolved significantly. Let's explore modern patterns including async/await, Promises, and how to handle complex async flows.</p>
+                
+                <div class="code-snippet">
+// Modern async/await pattern
+async function fetchUserData(userId) {
+    try {
+        const user = await fetch(`/api/users/${userId}`);
+        const userData = await user.json();
+        return userData;
+    } catch (error) {
+        console.error('Failed to fetch user:', error);
+        throw error;
+    }
+}
+                </div>
+                
+                <p><a href="javascript-async-patterns.html">Continue reading →</a></p>
+                <p><strong>See also:</strong> <a href="../documentation-site/javascript-examples.html">JavaScript Documentation</a> | <a href="../portfolio-site/javascript-projects.html">JS Projects</a></p>
+            </article>
+            
+            <article class="post">
+                <h2><a href="database-design-principles.html">Database Design Principles for Developers</a></h2>
+                <div class="post-meta">Published on March 5, 2025 | By Lisa Park | <a href="database-posts.html">Databases</a></div>
+                <p>Good database design is crucial for application performance and maintainability. Here are the fundamental principles every developer should know.</p>
+                <ul>
+                    <li><a href="normalization-guide.html">Database Normalization</a></li>
+                    <li><a href="indexing-strategies.html">Indexing Strategies</a></li>
+                    <li><a href="query-optimization.html">Query Optimization</a></li>
+                    <li><a href="schema-design.html">Schema Design Patterns</a></li>
+                </ul>
+                <p><a href="database-design-principles.html">Read the full guide →</a></p>
+                <p><strong>Related:</strong> <a href="../corporate-site/database-design.html">Database Services</a> | <a href="../documentation-site/database.html">Database Documentation</a></p>
+            </article>
+            
+            <article class="post">
+                <h2><a href="react-best-practices.html">React Development Best Practices 2025</a></h2>
+                <div class="post-meta">Published on March 3, 2025 | By Alex Chen | <a href="react-posts.html">React</a></div>
+                <p>React continues to evolve with new features and patterns. Here are the current best practices for building maintainable React applications.</p>
+                
+                <div class="code-snippet">
+// Custom hook for API calls
+function useApi(url) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    useEffect(() => {
+        fetch(url)
+            .then(response => response.json())
+            .then(setData)
+            .catch(setError)
+            .finally(() => setLoading(false));
+    }, [url]);
+    
+    return { data, loading, error };
+}
+                </div>
+                
+                <p><a href="react-best-practices.html">Learn more →</a></p>
+                <p><strong>Resources:</strong> <a href="../documentation-site/react-components.html">React Components</a> | <a href="../portfolio-site/react-projects.html">React Portfolio</a></p>
+            </article>
+            
+            <article class="post">
+                <h2><a href="api-design-guide.html">RESTful API Design Guidelines</a></h2>
+                <div class="post-meta">Published on March 1, 2025 | By Jordan Kim | <a href="api-posts.html">APIs</a></div>
+                <p>Designing clean, intuitive APIs is an art. Here's a comprehensive guide to creating RESTful APIs that developers will love to use.</p>
+                <ul>
+                    <li><a href="rest-principles.html">REST Principles</a></li>
+                    <li><a href="http-status-codes.html">HTTP Status Codes</a></li>
+                    <li><a href="api-versioning.html">API Versioning Strategies</a></li>
+                    <li><a href="api-documentation.html">API Documentation</a></li>
+                    <li><a href="api-security.html">API Security</a></li>
+                </ul>
+                <p><a href="api-design-guide.html">Read the complete guide →</a></p>
+                <p><strong>Related:</strong> <a href="../documentation-site/api.html">API Documentation</a> | <a href="../corporate-site/api-development.html">API Development Services</a></p>
+            </article>
+            
+            <h3>Programming Categories</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+                <div>
+                    <h4>Languages</h4>
+                    <ul>
+                        <li><a href="javascript-posts.html">JavaScript</a> (25 posts)</li>
+                        <li><a href="python-posts.html">Python</a> (18 posts)</li>
+                        <li><a href="typescript-posts.html">TypeScript</a> (12 posts)</li>
+                        <li><a href="java-posts.html">Java</a> (8 posts)</li>
+                        <li><a href="csharp-posts.html">C#</a> (6 posts)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Frameworks</h4>
+                    <ul>
+                        <li><a href="react-posts.html">React</a> (15 posts)</li>
+                        <li><a href="nodejs-posts.html">Node.js</a> (12 posts)</li>
+                        <li><a href="vue-posts.html">Vue.js</a> (8 posts)</li>
+                        <li><a href="django-posts.html">Django</a> (6 posts)</li>
+                        <li><a href="express-posts.html">Express</a> (5 posts)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Topics</h4>
+                    <ul>
+                        <li><a href="performance-posts.html">Performance</a> (10 posts)</li>
+                        <li><a href="testing-posts.html">Testing</a> (9 posts)</li>
+                        <li><a href="security-posts.html">Security</a> (7 posts)</li>
+                        <li><a href="devops-posts.html">DevOps</a> (6 posts)</li>
+                        <li><a href="database-posts.html">Databases</a> (8 posts)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>External Programming Resources</h3>
+            <ul>
+                <li><a href="../documentation-site/index.html">Developer Documentation Hub</a></li>
+                <li><a href="../corporate-site/software-development.html">Professional Development Services</a></li>
+                <li><a href="../portfolio-site/tech-projects.html">Programming Project Portfolio</a></li>
+                <li><a href="../index.html">Technology News and Reviews</a></li>
+                <li><a href="../news-site/tech-section.html">Programming News Coverage</a></li>
+            </ul>
+            
+            <div style="background: #f8f9fa; padding: 20px; margin-top: 30px; border-radius: 5px;">
+                <h3>💡 Programming Tips Newsletter</h3>
+                <p>Get weekly programming tips, tutorials, and industry insights delivered to your inbox.</p>
+                <p><a href="newsletter-signup.html">Subscribe to Newsletter</a> | <a href="programming-resources.html">Free Resources</a></p>
+            </div>
+            
+            <div style="background: #e8f5e8; padding: 20px; margin-top: 20px; border-radius: 5px;">
+                <h3>🚀 Featured Project</h3>
+                <p>Check out our latest <a href="../portfolio-site/data-visualization.html">Data Visualization Dashboard</a> built with D3.js and Vue.js, showcasing advanced programming techniques.</p>
+                <p><a href="../documentation-site/javascript-examples.html">View Code Examples</a> | <a href="../corporate-site/consulting.html">Get Professional Help</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

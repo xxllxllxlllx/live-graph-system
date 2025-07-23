@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevDocs Hub - Comprehensive Developer Documentation</title>
+    <meta name="description" content="Complete developer documentation, API references, tutorials, and guides for modern web development, mobile apps, and software engineering.">
+    <style>
+        body { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; margin: 0; padding: 0; background: #f8f9fa; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: #2c3e50; color: white; padding: 20px; overflow-y: auto; }
+        .sidebar a { color: #ecf0f1; text-decoration: none; display: block; padding: 5px 0; }
+        .sidebar a:hover { color: #3498db; }
+        .main-content { flex: 1; padding: 40px; background: white; margin: 20px; border-radius: 8px; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 15px 0; overflow-x: auto; }
+        .api-endpoint { background: #e8f5e8; border-left: 4px solid #28a745; padding: 15px; margin: 15px 0; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; }
+        h1, h2, h3 { color: #2c3e50; }
+        .breadcrumb { background: #e9ecef; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h3>DevDocs Hub</h3>
+            
+            <h4>Getting Started</h4>
+            <a href="index.html">Overview</a>
+            <a href="quick-start.html">Quick Start</a>
+            <a href="installation.html">Installation</a>
+            <a href="configuration.html">Configuration</a>
+            
+            <h4>API Reference</h4>
+            <a href="api.html">API Overview</a>
+            <a href="authentication.html">Authentication</a>
+            <a href="endpoints.html">Endpoints</a>
+            <a href="webhooks.html">Webhooks</a>
+            <a href="rate-limits.html">Rate Limits</a>
+            
+            <h4>Web Development</h4>
+            <a href="web-apis.html">Web APIs</a>
+            <a href="javascript-sdk.html">JavaScript SDK</a>
+            <a href="react-components.html">React Components</a>
+            <a href="css-framework.html">CSS Framework</a>
+            
+            <h4>Mobile Development</h4>
+            <a href="mobile-sdk.html">Mobile SDK</a>
+            <a href="ios-integration.html">iOS Integration</a>
+            <a href="android-integration.html">Android Integration</a>
+            <a href="react-native.html">React Native</a>
+            
+            <h4>Backend Services</h4>
+            <a href="database.html">Database</a>
+            <a href="server-apis.html">Server APIs</a>
+            <a href="microservices.html">Microservices</a>
+            <a href="deployment.html">Deployment</a>
+            
+            <h4>Security</h4>
+            <a href="security.html">Security Overview</a>
+            <a href="oauth.html">OAuth 2.0</a>
+            <a href="encryption.html">Encryption</a>
+            <a href="best-practices.html">Best Practices</a>
+            
+            <h4>AI & Machine Learning</h4>
+            <a href="ai-apis.html">AI APIs</a>
+            <a href="ml-models.html">ML Models</a>
+            <a href="data-processing.html">Data Processing</a>
+            <a href="training.html">Model Training</a>
+        </div>
+        
+        <div class="main-content">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> > Documentation Overview
+            </div>
+            
+            <h1>Developer Documentation Hub</h1>
+            <p>Welcome to the comprehensive developer documentation for modern web and mobile development. This documentation covers APIs, SDKs, frameworks, and best practices.</p>
+            
+            <h2>Quick Navigation</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0;">
+                <div style="border: 1px solid #dee2e6; padding: 20px; border-radius: 8px;">
+                    <h3><a href="api.html">API Documentation</a></h3>
+                    <p>Complete REST API reference with examples and interactive testing.</p>
+                    <ul>
+                        <li><a href="api-getting-started.html">Getting Started</a></li>
+                        <li><a href="api-authentication.html">Authentication Guide</a></li>
+                        <li><a href="api-examples.html">Code Examples</a></li>
+                        <li><a href="api-testing.html">Testing Tools</a></li>
+                    </ul>
+                </div>
+                
+                <div style="border: 1px solid #dee2e6; padding: 20px; border-radius: 8px;">
+                    <h3><a href="web-development.html">Web Development</a></h3>
+                    <p>Frontend and backend web development guides and frameworks.</p>
+                    <ul>
+                        <li><a href="html-css-guide.html">HTML/CSS Guide</a></li>
+                        <li><a href="javascript-advanced.html">Advanced JavaScript</a></li>
+                        <li><a href="framework-comparison.html">Framework Comparison</a></li>
+                        <li><a href="performance-optimization.html">Performance Tips</a></li>
+                    </ul>
+                </div>
+                
+                <div style="border: 1px solid #dee2e6; padding: 20px; border-radius: 8px;">
+                    <h3><a href="mobile-development.html">Mobile Development</a></h3>
+                    <p>Native and cross-platform mobile app development resources.</p>
+                    <ul>
+                        <li><a href="mobile-architecture.html">App Architecture</a></li>
+                        <li><a href="ui-ux-mobile.html">Mobile UI/UX</a></li>
+                        <li><a href="mobile-testing.html">Testing Strategies</a></li>
+                        <li><a href="app-store-guide.html">App Store Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div style="border: 1px solid #dee2e6; padding: 20px; border-radius: 8px;">
+                    <h3><a href="security.html">Security & Best Practices</a></h3>
+                    <p>Security guidelines, authentication, and development best practices.</p>
+                    <ul>
+                        <li><a href="security-checklist.html">Security Checklist</a></li>
+                        <li><a href="data-protection.html">Data Protection</a></li>
+                        <li><a href="secure-coding.html">Secure Coding</a></li>
+                        <li><a href="compliance.html">Compliance Guide</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>Popular Documentation Sections</h2>
+            <ul>
+                <li><a href="quick-start-tutorial.html">5-Minute Quick Start Tutorial</a></li>
+                <li><a href="common-use-cases.html">Common Use Cases and Examples</a></li>
+                <li><a href="troubleshooting.html">Troubleshooting Guide</a></li>
+                <li><a href="migration-guide.html">Migration Guide</a></li>
+                <li><a href="changelog.html">Changelog and Updates</a></li>
+                <li><a href="community.html">Community Resources</a></li>
+            </ul>
+            
+            <div class="api-endpoint">
+                <h3>Featured API Endpoint</h3>
+                <p><strong>GET</strong> <code>/api/v1/data</code></p>
+                <p>Retrieve data with optional filtering and pagination. <a href="api-data-endpoint.html">View full documentation →</a></p>
+            </div>
+            
+            <div class="warning">
+                <h3>⚠️ Important Notice</h3>
+                <p>API v2.0 will be released soon. Check the <a href="v2-migration.html">migration guide</a> to prepare for the upgrade.</p>
+            </div>
+            
+            <h2>External Resources</h2>
+            <ul>
+                <li><a href="../blog-site/programming.html">Programming Blog Posts</a></li>
+                <li><a href="../corporate-site/software-development.html">Professional Development Services</a></li>
+                <li><a href="../index.html">Latest Tech News</a></li>
+                <li><a href="../news-site/tech-section.html">Technology News Coverage</a></li>
+                <li><a href="../portfolio-site/tech-projects.html">Example Projects</a></li>
+            </ul>
+            
+            <h2>Code Example</h2>
+            <div class="code-block">
+// Example API call using JavaScript
+fetch('/api/v1/data', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+            </div>
+            
+            <p><strong>Related Documentation:</strong></p>
+            <ul>
+                <li><a href="javascript-examples.html">More JavaScript Examples</a></li>
+                <li><a href="python-examples.html">Python Examples</a></li>
+                <li><a href="curl-examples.html">cURL Examples</a></li>
+                <li><a href="postman-collection.html">Postman Collection</a></li>
+            </ul>
+            
+            <hr style="margin: 40px 0;">
+            <p><em>Need help? Check our <a href="support.html">support resources</a> or visit the <a href="../blog-site/tutorials.html">tutorial blog</a>.</em></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Graph System - Web Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #333333;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #888888;
+            font-weight: 400;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .scraper-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .panel {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            border-color: #555555;
+            transform: translateY(-2px);
+        }
+
+        .panel h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 2px;
+        }
+
+        .scraper-section {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .scraper-section:hover {
+            border-color: #555555;
+            transform: translateY(-2px);
+        }
+
+        .scraper-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scraper-section h3::before {
+            content: '';
+            width: 3px;
+            height: 16px;
+            background: #ffffff;
+            border-radius: 2px;
+        }
+
+        .section-description {
+            color: #888888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .section-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .control-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .section-status {
+            background: #000000;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-idle { background: #666666; }
+        .status-running { background: #00ff00; animation: pulse 2s infinite; }
+        .status-error { background: #ff4444; }
+        .status-complete { background: #ffffff; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            background: #000000;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select[multiple] {
+            min-height: 120px;
+            padding: 8px 12px;
+        }
+
+        .form-group select[multiple] option {
+            padding: 8px;
+            margin: 2px 0;
+            border-radius: 4px;
+        }
+
+        .form-group select[multiple] option:checked {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #666666;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #cccccc;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #ffffff;
+            color: #000000;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-display {
+            background: #000000;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #222222;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .status-label {
+            color: #888888;
+            font-weight: 500;
+        }
+
+        .status-value {
+            color: #ffffff;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        .log-container {
+            background: #000000;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 20px;
+            height: 350px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #cccccc;
+        }
+
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .log-container::-webkit-scrollbar-track {
+            background: #111111;
+        }
+
+        .log-container::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+        }
+
+        /* TorBot Output Panel Styles */
+        .torbot-output-panel {
+            margin-top: 20px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            background: #0a0a0a;
+            padding: 15px;
+        }
+
+        .torbot-output-panel h4 {
+            margin: 0 0 15px 0;
+            color: #ffffff;
+            font-size: 16px;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 8px;
+        }
+
+        .torbot-output-container {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .torbot-output-content {
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #cccccc;
+        }
+
+        .torbot-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            border: 1px solid #333333;
+        }
+
+        .stat-item {
+            color: #888888;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .stat-item span {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .torbot-output-content .torbot-url {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .torbot-output-content .torbot-email {
+            color: #2196F3;
+        }
+
+        .torbot-output-content .torbot-phone {
+            color: #FF9800;
+        }
+
+        .torbot-output-content .torbot-error {
+            color: #f44336;
+        }
+
+        .torbot-output-content .torbot-info {
+            color: #9C27B0;
+        }
+
+        .graph-container {
+            grid-column: 1 / -1;
+            margin-top: 30px;
+        }
+
+        .graph-frame {
+            width: 100%;
+            height: 700px;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            background: #111111;
+        }
+
+        .running {
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .stopped {
+            color: #ffffff;
+        }
+
+        .error {
+            color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Live Graph System</h1>
+            <p>Advanced web scraping and real-time graph visualization</p>
+        </div>
+
+        <div class="content">
+            <!-- Four Scraper Sections -->
+            <div class="scraper-sections">
+                <!-- HTTP/HTTPS Scraper Section -->
+                <div class="scraper-section">
+                    <h3>🌐 HTTP/HTTPS Scraper</h3>
+                    <div class="section-description">
+                        Traditional web scraping for regular websites. Crawls through links hierarchically and builds a graph structure.
+                    </div>
+
+                    <div class="section-status">
+                        <span class="status-indicator status-idle" id="http-status-indicator"></span>
+                        <span id="http-status-text">Ready</span>
+                    </div>
+
+                    <div class="section-controls">
+                        <div class="form-group">
+                            <label for="http-url-input">Starting URL</label>
+                            <input type="url" id="http-url-input" placeholder="https://example.com" value="https://example.com">
+                        </div>
+
+                        <div class="control-row">
+                            <div class="form-group">
+                                <label for="http-depth-input">Max Depth</label>
+                                <input type="number" id="http-depth-input" value="3" min="1" max="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="http-links-input">Max Links</label>
+                                <input type="number" id="http-links-input" value="5" min="1" max="20">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="http-progressive-input" checked>
+                                <label for="http-progressive-input">Progressive Mode</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary" id="http-start-btn">Start HTTP Scraping</button>
+                            <button class="btn btn-danger" id="http-stop-btn" disabled>Stop</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOC Onion Crawler Section -->
+                <div class="scraper-section">
+                    <h3>🧅 TOC Onion Crawler</h3>
+                    <div class="section-description">
+                        Deep onion network crawler. Traverses .onion sites through TOR proxy and builds hierarchical link structures.
+                    </div>
+
+                    <div class="section-status">
+                        <span class="status-indicator status-idle" id="toc-status-indicator"></span>
+                        <span id="toc-status-text">Ready</span>
+                    </div>
+
+                    <div class="section-controls">
+                        <div class="form-group">
+                            <label for="toc-url-input">Starting .onion URL</label>
+                            <input type="url" id="toc-url-input" placeholder="http://example.onion" value="">
+                        </div>
+
+                        <div class="control-row">
+                            <div class="form-group">
+                                <label for="toc-proxy-input">SOCKS5 Proxy</label>
+                                <input type="text" id="toc-proxy-input" value="127.0.0.1:9050" placeholder="host:port">
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary" id="toc-start-btn">Start TOC Crawling</button>
+                            <button class="btn btn-danger" id="toc-stop-btn" disabled>Stop</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OnionSearch Section -->
+                <div class="scraper-section">
+                    <h3>🔍 OnionSearch Engine</h3>
+                    <div class="section-description">
+                        Search multiple onion search engines simultaneously. Aggregates results from various dark web search platforms.
+                    </div>
+
+                    <div class="section-status">
+                        <span class="status-indicator status-idle" id="onionsearch-status-indicator"></span>
+                        <span id="onionsearch-status-text">Ready</span>
+                    </div>
+
+                    <div class="section-controls">
+                        <div class="form-group">
+                            <label for="onionsearch-query-input">Search Query</label>
+                            <input type="text" id="onionsearch-query-input" placeholder="Enter search terms" value="">
+                        </div>
+
+                        <div class="control-row">
+                            <div class="form-group">
+                                <label for="onionsearch-engines-input">Search Engines</label>
+                                <select id="onionsearch-engines-input" multiple>
+                                    <option value="ahmia">Ahmia</option>
+                                    <option value="darksearchio">DarkSearch.io</option>
+                                    <option value="onionland">OnionLand</option>
+                                    <option value="phobos">Phobos</option>
+                                    <option value="haystack">Haystack</option>
+                                    <option value="tor66">Tor66</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="onionsearch-limit-input">Results Limit</label>
+                                <input type="number" id="onionsearch-limit-input" value="3" min="1" max="10">
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary" id="onionsearch-start-btn">Start OnionSearch</button>
+                            <button class="btn btn-danger" id="onionsearch-stop-btn" disabled>Stop</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TorBot Section -->
+                <div class="scraper-section">
+                    <h3>🤖 TorBot OSINT Crawler</h3>
+                    <div class="section-description">
+                        Advanced OSINT tool for dark web intelligence gathering. Analyzes content, extracts metadata, and classifies sites using machine learning.
+                    </div>
+
+                    <div class="section-status">
+                        <span class="status-indicator status-idle" id="torbot-status-indicator"></span>
+                        <span id="torbot-status-text">Ready</span>
+                    </div>
+
+                    <div class="section-controls">
+                        <div class="form-group">
+                            <label for="torbot-url-input">Target URL</label>
+                            <input type="url" id="torbot-url-input" placeholder="https://example.com or http://example.onion" value="">
+                        </div>
+
+                        <div class="control-row">
+                            <div class="form-group">
+                                <label for="torbot-depth-input">Crawl Depth</label>
+                                <input type="number" id="torbot-depth-input" value="2" min="1" max="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="torbot-socks-host-input">SOCKS5 Host</label>
+                                <input type="text" id="torbot-socks-host-input" value="127.0.0.1" placeholder="127.0.0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="torbot-socks-port-input">SOCKS5 Port</label>
+                                <input type="number" id="torbot-socks-port-input" value="9050" min="1" max="65535">
+                            </div>
+                        </div>
+
+                        <div class="control-row">
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="torbot-disable-socks5-input">
+                                    <label for="torbot-disable-socks5-input">Disable SOCKS5 Proxy</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="torbot-info-mode-input">
+                                    <label for="torbot-info-mode-input">Enable Info Mode (Extract emails, phones)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="torbot-output-format">Output Format</label>
+                            <select id="torbot-output-format">
+                                <option value="json">JSON (Structured)</option>
+                                <option value="tree">Tree View</option>
+                                <option value="table">Table View</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary" id="torbot-start-btn">Start TorBot OSINT</button>
+                            <button class="btn btn-danger" id="torbot-stop-btn" disabled>Stop</button>
+                        </div>
+
+                        <!-- TorBot Live Output Panel -->
+                        <div class="torbot-output-panel" id="torbot-output-panel" style="display: none;">
+                            <h4>🔍 Live TorBot Output</h4>
+                            <div class="torbot-output-container" id="torbot-output-container">
+                                <div class="torbot-output-content" id="torbot-output-content"></div>
+                            </div>
+                            <div class="torbot-stats" id="torbot-stats">
+                                <span class="stat-item">Links Found: <span id="torbot-links-count">0</span></span>
+                                <span class="stat-item">Emails: <span id="torbot-emails-count">0</span></span>
+                                <span class="stat-item">Phone Numbers: <span id="torbot-phones-count">0</span></span>
+                                <span class="stat-item">Depth: <span id="torbot-current-depth">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log Panel -->
+            <div class="panel">
+                <h2>📊 Activity Log</h2>
+                <div class="log-container" id="activity-log">
+                    <div>System ready - Select a scraping method above to begin...</div>
+                </div>
+            </div>
+
+            <!-- Graph Visualization Panel -->
+            <div class="panel">
+                <h2>🌐 Live Graph Visualization</h2>
+                <iframe src="http://localhost:8001" class="graph-frame" id="graph-frame"
+                        onload="handleIframeLoad()" onerror="handleIframeError()"></iframe>
+                <div id="graph-status" style="display: none; text-align: center; padding: 20px; color: #888;">
+                    Loading graph visualization...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state management
+        let scraperStates = {
+            http: { running: false, status: 'Ready' },
+            toc: { running: false, status: 'Ready' },
+            onionsearch: { running: false, status: 'Ready' },
+            torbot: { running: false, status: 'Ready' }
+        };
+
+        let statusInterval;
+        let progressInterval;
+
+        function updateScraperStatus(scraper, status, isRunning = false) {
+            scraperStates[scraper].running = isRunning;
+            scraperStates[scraper].status = status;
+
+            const indicator = document.getElementById(`${scraper}-status-indicator`);
+            const text = document.getElementById(`${scraper}-status-text`);
+            const startBtn = document.getElementById(`${scraper}-start-btn`);
+            const stopBtn = document.getElementById(`${scraper}-stop-btn`);
+
+            // Update status indicator
+            indicator.className = `status-indicator ${isRunning ? 'status-running' : 'status-idle'}`;
+            text.textContent = status;
+
+            // Update buttons
+            startBtn.disabled = isRunning;
+            stopBtn.disabled = !isRunning;
+        }
+
+        function updateStatus() {
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    // Update HTTP scraper status (existing functionality)
+                    const httpRunning = data.is_running;
+                    updateScraperStatus('http', httpRunning ? 'Running' : 'Ready', httpRunning);
+                })
+                .catch(error => console.error('Status update error:', error));
+        }
+        
+        function updateProgress() {
+            fetch('/api/progress')
+                .then(response => response.json())
+                .then(updates => {
+                    const logContainer = document.getElementById('activity-log');
+                    
+                    updates.forEach(update => {
+                        if (update.type === 'progress') {
+                            logMessage(`Progress: Depth ${update.current_depth}, Pages: ${update.total_scraped}, Current: ${update.current_page}`);
+                        } else if (update.type === 'completion') {
+                            logMessage(`Completed: ${update.message} (${update.status})`);
+                        }
+                    });
+                    
+                    // Clear processed updates
+                    if (updates.length > 0) {
+                        fetch('/api/clear_progress', { method: 'POST' });
+                    }
+                })
+                .catch(error => console.error('Progress update error:', error));
+        }
+        
+        function logMessage(message) {
+            const logContainer = document.getElementById('activity-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.marginBottom = '8px';
+            logEntry.style.padding = '4px 0';
+            logEntry.innerHTML = `<span style="color: #666; font-size: 12px;">[${timestamp}]</span> <span style="color: #ccc;">${message}</span>`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+
+            // Keep only last 50 messages
+            while (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+        }
+        
+        // HTTP/HTTPS Scraper Functions
+        function startHttpScraping() {
+            const url = document.getElementById('http-url-input').value.trim();
+            const maxDepth = parseInt(document.getElementById('http-depth-input').value);
+            const maxLinks = parseInt(document.getElementById('http-links-input').value);
+            const progressive = document.getElementById('http-progressive-input').checked;
+
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            updateScraperStatus('http', 'Starting...', true);
+            logMessage('Starting HTTP/HTTPS scraping...');
+
+            fetch('/api/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    url: url,
+                    max_depth: maxDepth,
+                    max_links: maxLinks,
+                    progressive: progressive,
+                    scraper_type: 'http'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    updateScraperStatus('http', 'Error: ' + data.error, false);
+                    logMessage('HTTP scraping error: ' + data.error);
+                } else {
+                    updateScraperStatus('http', 'Running', true);
+                    logMessage('HTTP scraping started: ' + data.message);
+                }
+            })
+            .catch(error => {
+                updateScraperStatus('http', 'Failed to start', false);
+                logMessage('HTTP scraping failed to start: ' + error);
+            });
+        }
+
+        function stopHttpScraping() {
+            fetch('/api/stop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scraper_type: 'http' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateScraperStatus('http', 'Stopped', false);
+                logMessage('HTTP scraping stopped: ' + data.message);
+            })
+            .catch(error => {
+                logMessage('Failed to stop HTTP scraping: ' + error);
+            });
+        }
+
+        // TOC Onion Crawler Functions
+        function startTocCrawling() {
+            const url = document.getElementById('toc-url-input').value.trim();
+            const proxy = document.getElementById('toc-proxy-input').value.trim();
+
+            if (!url) {
+                alert('Please enter a .onion URL');
+                return;
+            }
+
+            if (!url.includes('.onion')) {
+                alert('Please enter a valid .onion URL');
+                return;
+            }
+
+            updateScraperStatus('toc', 'Starting...', true);
+            logMessage('Starting TOC onion crawling...');
+
+            fetch('/api/toc/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    url: url,
+                    proxy: proxy
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    updateScraperStatus('toc', 'Error: ' + data.error, false);
+                    logMessage('TOC crawling error: ' + data.error);
+                } else {
+                    updateScraperStatus('toc', 'Running', true);
+                    logMessage('TOC crawling started: ' + data.message);
+                }
+            })
+            .catch(error => {
+                updateScraperStatus('toc', 'Failed to start', false);
+                logMessage('TOC crawling failed to start: ' + error);
+            });
+        }
+
+        function stopTocCrawling() {
+            fetch('/api/toc/stop', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                updateScraperStatus('toc', 'Stopped', false);
+                logMessage('TOC crawling stopped: ' + data.message);
+            })
+            .catch(error => {
+                logMessage('Failed to stop TOC crawling: ' + error);
+            });
+        }
+
+        // OnionSearch Functions
+        function startOnionSearch() {
+            const query = document.getElementById('onionsearch-query-input').value.trim();
+            const engines = Array.from(document.getElementById('onionsearch-engines-input').selectedOptions)
+                                .map(option => option.value);
+            const limit = parseInt(document.getElementById('onionsearch-limit-input').value);
+
+            if (!query) {
+                alert('Please enter a search query');
+                return;
+            }
+
+            updateScraperStatus('onionsearch', 'Starting...', true);
+            logMessage('Starting OnionSearch...');
+
+            fetch('/api/onionsearch/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: query,
+                    engines: engines.length > 0 ? engines : null,
+                    limit: limit
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    updateScraperStatus('onionsearch', 'Error: ' + data.error, false);
+                    logMessage('OnionSearch error: ' + data.error);
+                } else {
+                    updateScraperStatus('onionsearch', 'Running', true);
+                    logMessage('OnionSearch started: ' + data.message);
+                }
+            })
+            .catch(error => {
+                updateScraperStatus('onionsearch', 'Failed to start', false);
+                logMessage('OnionSearch failed to start: ' + error);
+            });
+        }
+
+        function stopOnionSearch() {
+            fetch('/api/onionsearch/stop', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                updateScraperStatus('onionsearch', 'Stopped', false);
+                logMessage('OnionSearch stopped: ' + data.message);
+            })
+            .catch(error => {
+                logMessage('Failed to stop OnionSearch: ' + error);
+            });
+        }
+
+        // TorBot Functions
+        function startTorBot() {
+            const url = document.getElementById('torbot-url-input').value.trim();
+            const depth = parseInt(document.getElementById('torbot-depth-input').value);
+            const socksHost = document.getElementById('torbot-socks-host-input').value.trim();
+            const socksPort = parseInt(document.getElementById('torbot-socks-port-input').value);
+            const disableSocks5 = document.getElementById('torbot-disable-socks5-input').checked;
+            const infoMode = document.getElementById('torbot-info-mode-input').checked;
+            const outputFormat = document.getElementById('torbot-output-format').value;
+
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            // Show TorBot output panel
+            showTorBotOutputPanel();
+            clearTorBotOutput();
+            updateTorBotStats(0, 0, 0, 0);
+
+            updateScraperStatus('torbot', 'Initializing...', true);
+            logMessage('🤖 Starting TorBot OSINT crawling...');
+            addTorBotOutput('🚀 Initializing TorBot OSINT Crawler...', 'info');
+            addTorBotOutput(`📍 Target URL: ${url}`, 'url');
+            addTorBotOutput(`🔍 Crawl Depth: ${depth}`, 'info');
+            addTorBotOutput(`🌐 Proxy: ${disableSocks5 ? 'Disabled (Direct)' : socksHost + ':' + socksPort}`, 'info');
+            addTorBotOutput(`📊 Info Mode: ${infoMode ? 'Enabled (Extract emails/phones)' : 'Disabled'}`, 'info');
+
+            fetch('/api/torbot/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    url: url,
+                    depth: depth,
+                    socks_host: socksHost,
+                    socks_port: socksPort,
+                    disable_socks5: disableSocks5,
+                    info_mode: infoMode,
+                    output_format: outputFormat
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    updateScraperStatus('torbot', 'Error: ' + data.error, false);
+                    logMessage('❌ TorBot crawling error: ' + data.error);
+                    addTorBotOutput(`❌ Error: ${data.error}`, 'error');
+                    hideTorBotOutputPanel();
+                } else {
+                    updateScraperStatus('torbot', 'Crawling...', true);
+                    logMessage('✅ TorBot crawling started successfully');
+                    addTorBotOutput('✅ TorBot started successfully', 'info');
+                    addTorBotOutput('🔄 Crawling in progress...', 'info');
+
+                    // Start polling for TorBot progress
+                    startTorBotProgressPolling();
+                }
+            })
+            .catch(error => {
+                updateScraperStatus('torbot', 'Failed to start', false);
+                logMessage('❌ TorBot crawling failed to start: ' + error);
+                addTorBotOutput(`❌ Failed to start: ${error}`, 'error');
+                hideTorBotOutputPanel();
+            });
+        }
+
+        function stopTorBot() {
+            fetch('/api/torbot/stop', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                updateScraperStatus('torbot', 'Stopped', false);
+                logMessage('🛑 TorBot crawling stopped: ' + data.message);
+                addTorBotOutput('🛑 TorBot crawling stopped by user', 'info');
+                stopTorBotProgressPolling();
+            })
+            .catch(error => {
+                logMessage('❌ Failed to stop TorBot: ' + error);
+                addTorBotOutput(`❌ Failed to stop: ${error}`, 'error');
+            });
+        }
+
+        // TorBot Output Panel Functions
+        function showTorBotOutputPanel() {
+            document.getElementById('torbot-output-panel').style.display = 'block';
+        }
+
+        function hideTorBotOutputPanel() {
+            document.getElementById('torbot-output-panel').style.display = 'none';
+        }
+
+        function clearTorBotOutput() {
+            document.getElementById('torbot-output-content').innerHTML = '';
+        }
+
+        function addTorBotOutput(message, type = 'info') {
+            const outputContent = document.getElementById('torbot-output-content');
+            const timestamp = new Date().toLocaleTimeString();
+            const messageElement = document.createElement('div');
+            messageElement.className = `torbot-${type}`;
+            messageElement.innerHTML = `[${timestamp}] ${message}`;
+            outputContent.appendChild(messageElement);
+            outputContent.scrollTop = outputContent.scrollHeight;
+        }
+
+        function updateTorBotStats(links, emails, phones, depth) {
+            document.getElementById('torbot-links-count').textContent = links;
+            document.getElementById('torbot-emails-count').textContent = emails;
+            document.getElementById('torbot-phones-count').textContent = phones;
+            document.getElementById('torbot-current-depth').textContent = depth;
+        }
+
+        let torBotProgressInterval = null;
+
+        function startTorBotProgressPolling() {
+            torBotProgressInterval = setInterval(() => {
+                fetch('/api/torbot/progress')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'completed') {
+                        updateScraperStatus('torbot', 'Completed', false);
+                        addTorBotOutput('✅ TorBot crawling completed successfully', 'info');
+                        if (data.stats) {
+                            updateTorBotStats(
+                                data.stats.links || 0,
+                                data.stats.emails || 0,
+                                data.stats.phones || 0,
+                                data.stats.depth || 0
+                            );
+                        }
+                        stopTorBotProgressPolling();
+                    } else if (data.status === 'error') {
+                        updateScraperStatus('torbot', 'Error', false);
+                        addTorBotOutput(`❌ Error: ${data.message}`, 'error');
+                        stopTorBotProgressPolling();
+                    } else if (data.progress) {
+                        // Update progress information
+                        if (data.progress.current_url) {
+                            addTorBotOutput(`🔍 Crawling: ${data.progress.current_url}`, 'url');
+                        }
+                        if (data.progress.stats) {
+                            updateTorBotStats(
+                                data.progress.stats.links || 0,
+                                data.progress.stats.emails || 0,
+                                data.progress.stats.phones || 0,
+                                data.progress.stats.depth || 0
+                            );
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log('TorBot progress polling error:', error);
+                });
+            }, 2000); // Poll every 2 seconds
+        }
+
+        function stopTorBotProgressPolling() {
+            if (torBotProgressInterval) {
+                clearInterval(torBotProgressInterval);
+                torBotProgressInterval = null;
+            }
+        }
+        
+        function handleIframeLoad() {
+            document.getElementById('graph-status').style.display = 'none';
+            logMessage('Graph visualization loaded successfully');
+        }
+
+        function handleIframeError() {
+            document.getElementById('graph-status').style.display = 'block';
+            document.getElementById('graph-status').innerHTML =
+                '<span style="color: #ff4444;">⚠️ Graph visualization server not available</span><br>' +
+                '<span style="font-size: 0.9em;">Make sure the visualization server is running on port 8001</span>';
+            logMessage('Warning: Graph visualization server not available');
+        }
+
+        // Event listeners for all four scrapers
+        document.getElementById('http-start-btn').addEventListener('click', startHttpScraping);
+        document.getElementById('http-stop-btn').addEventListener('click', stopHttpScraping);
+
+        document.getElementById('toc-start-btn').addEventListener('click', startTocCrawling);
+        document.getElementById('toc-stop-btn').addEventListener('click', stopTocCrawling);
+
+        document.getElementById('onionsearch-start-btn').addEventListener('click', startOnionSearch);
+        document.getElementById('onionsearch-stop-btn').addEventListener('click', stopOnionSearch);
+
+        document.getElementById('torbot-start-btn').addEventListener('click', startTorBot);
+        document.getElementById('torbot-stop-btn').addEventListener('click', stopTorBot);
+
+        // Start periodic updates
+        updateStatus();
+        statusInterval = setInterval(updateStatus, 2000);
+        progressInterval = setInterval(updateProgress, 1000);
+
+        // Check if graph visualization is available
+        setTimeout(() => {
+            const iframe = document.getElementById('graph-frame');
+            try {
+                // Try to access iframe content to check if it loaded
+                if (!iframe.contentDocument && !iframe.contentWindow) {
+                    handleIframeError();
+                }
+            } catch (e) {
+                // Cross-origin restrictions are normal, this means it's loading
+            }
+        }, 3000);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            clearInterval(statusInterval);
+            clearInterval(progressInterval);
+        });
+    </script>
+</body>
+</html>

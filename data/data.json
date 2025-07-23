@@ -1,0 +1,8 @@
+{
+  "name": "TOC Crawl: http://test.onion",
+  "type": "root",
+  "description": "Mock TOC crawler results for testing",
+  "url": "http://test.onion",
+  "children": [],
+  "mock_data": true
+}

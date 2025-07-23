@@ -1,0 +1,27 @@
+{
+  "name": "live-graph-system",
+  "version": "1.0.0",
+  "description": "Live data generation system for interactive graph visualization",
+  "main": "data-generator.js",
+  "scripts": {
+    "start": "node data-generator.js --start",
+    "serve": "python -m http.server 8001",
+    "dev": "concurrently \"npm run serve\" \"npm run start\"",
+    "generate": "node data-generator.js --start"
+  },
+  "keywords": [
+    "data-visualization",
+    "d3js",
+    "live-data",
+    "graph",
+    "interactive"
+  ],
+  "author": "Live Graph System",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Live Graph System Controller</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .panel h2 {
+            margin: 0 0 20px 0;
+            color: #495057;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .control-group input, .control-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: #0056b3;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            background: #c82333;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .status-display {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .status-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .status-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .status-value {
+            color: #007bff;
+            font-weight: 600;
+        }
+        
+        .log-container {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 4px;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .log-entry {
+            margin-bottom: 4px;
+            padding: 2px 0;
+        }
+        
+        .log-timestamp {
+            color: #a0aec0;
+        }
+        
+        .iframe-container {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+        
+        .graph-frame {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Live Graph System Controller</h1>
+            <p>Real-time data generation and visualization control panel</p>
+        </div>
+        
+        <div class="content">
+            <div class="panel">
+                <h2>Generation Controls</h2>
+                
+                <div class="status-display">
+                    <div class="status-item">
+                        <span class="status-label">Status:</span>
+                        <span class="status-value" id="status-display">Stopped</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Current Cycle:</span>
+                        <span class="status-value" id="cycle-display">0 / 5</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Delay:</span>
+                        <span class="status-value" id="delay-display">3 seconds</span>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="max-cycles">Maximum Cycles:</label>
+                    <input type="number" id="max-cycles" value="5" min="1" max="20">
+                </div>
+                
+                <div class="control-group">
+                    <label for="cycle-delay">Delay Between Cycles (seconds):</label>
+                    <input type="number" id="cycle-delay" value="3" min="1" max="10">
+                </div>
+                
+                <div class="control-group">
+                    <label for="generation-mode">Generation Mode:</label>
+                    <select id="generation-mode">
+                        <option value="random">Random Branches</option>
+                        <option value="technology">Technology Focus</option>
+                        <option value="science">Science Focus</option>
+                        <option value="arts">Arts Focus</option>
+                        <option value="business">Business Focus</option>
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" id="start-generation">Start Generation</button>
+                    <button class="btn btn-danger" id="stop-generation" disabled>Stop Generation</button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2>Activity Log</h2>
+                <div class="log-container" id="activity-log">
+                    <div class="log-entry">
+                        <span class="log-timestamp">[Ready]</span> System initialized and ready for data generation
+                    </div>
+                </div>
+            </div>
+            
+            <div class="iframe-container">
+                <h2 style="margin-bottom: 15px; color: #495057;">Live Graph Visualization</h2>
+                <iframe src="index.html" class="graph-frame" id="graph-frame"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class LiveSystemController {
+            constructor() {
+                this.isRunning = false;
+                this.cycleCount = 0;
+                this.maxCycles = 5;
+                this.delayBetweenCycles = 3000;
+                this.generationMode = 'random';
+                
+                this.initializeControls();
+                this.updateDisplay();
+            }
+            
+            initializeControls() {
+                document.getElementById('start-generation').addEventListener('click', () => this.startGeneration());
+                document.getElementById('stop-generation').addEventListener('click', () => this.stopGeneration());
+                
+                document.getElementById('max-cycles').addEventListener('change', (e) => {
+                    this.maxCycles = parseInt(e.target.value);
+                    this.updateDisplay();
+                });
+                
+                document.getElementById('cycle-delay').addEventListener('change', (e) => {
+                    this.delayBetweenCycles = parseInt(e.target.value) * 1000;
+                    this.updateDisplay();
+                });
+                
+                document.getElementById('generation-mode').addEventListener('change', (e) => {
+                    this.generationMode = e.target.value;
+                });
+            }
+            
+            updateDisplay() {
+                document.getElementById('status-display').textContent = this.isRunning ? 'Running' : 'Stopped';
+                document.getElementById('cycle-display').textContent = `${this.cycleCount} / ${this.maxCycles}`;
+                document.getElementById('delay-display').textContent = `${this.delayBetweenCycles / 1000} seconds`;
+                
+                document.getElementById('start-generation').disabled = this.isRunning;
+                document.getElementById('stop-generation').disabled = !this.isRunning;
+            }
+            
+            log(message) {
+                const logContainer = document.getElementById('activity-log');
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> ${message}`;
+                logContainer.appendChild(logEntry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+            
+            startGeneration() {
+                this.isRunning = true;
+                this.cycleCount = 0;
+                this.updateDisplay();
+                this.log('Starting live data generation process...');
+                
+                // Send message to iframe to start generation
+                const iframe = document.getElementById('graph-frame');
+                iframe.contentWindow.postMessage({
+                    action: 'startGeneration',
+                    maxCycles: this.maxCycles,
+                    delay: this.delayBetweenCycles,
+                    mode: this.generationMode
+                }, '*');
+            }
+            
+            stopGeneration() {
+                this.isRunning = false;
+                this.updateDisplay();
+                this.log('Stopping data generation process...');
+                
+                // Send message to iframe to stop generation
+                const iframe = document.getElementById('graph-frame');
+                iframe.contentWindow.postMessage({
+                    action: 'stopGeneration'
+                }, '*');
+            }
+        }
+        
+        // Initialize controller when page loads
+        let controller;
+        document.addEventListener('DOMContentLoaded', () => {
+            controller = new LiveSystemController();
+            
+            // Listen for messages from iframe
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'generationUpdate') {
+                    controller.cycleCount = event.data.cycleCount;
+                    controller.updateDisplay();
+                    controller.log(event.data.message);
+                }
+                
+                if (event.data.type === 'generationComplete') {
+                    controller.isRunning = false;
+                    controller.updateDisplay();
+                    controller.log('Data generation completed successfully!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
