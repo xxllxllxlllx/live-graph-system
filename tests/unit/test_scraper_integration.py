@@ -82,6 +82,12 @@ except ImportError:
                 "current_depth": getattr(self.scraper, 'current_depth', 0) if self.scraper else 0
             }
 
+        def start_progressive_scraping(self, url, config=None):
+            """Mock progressive scraping method"""
+            self.is_running = True
+            self.current_url = url
+            return True
+
         def stop_scraping(self):
             self.is_running = False
 
@@ -92,10 +98,13 @@ except ImportError:
         def get_status(self):
             return self.integration.get_status()
 
-        def start_scraping(self, url, max_depth=3):
-            if not self.integration.is_running:
-                return True
-            return False
+        def start_scraping(self, url, max_depth=3, max_links=5, progressive=True):
+            if self.integration.is_running:
+                return False
+
+            if progressive:
+                self.integration.start_progressive_scraping(url)
+            return True
 
         def stop_scraping(self):
             self.integration.stop_scraping()
@@ -327,19 +336,16 @@ class TestScraperController(unittest.TestCase):
             status = self.controller.get_status()
             self.assertEqual(status, mock_status)
             
-    @patch('threading.Thread')
-    def test_start_scraping(self, mock_thread):
+    def test_start_scraping(self):
         """Test starting scraping through controller"""
-        mock_thread_instance = Mock()
-        mock_thread.return_value = mock_thread_instance
-        
         # Mock integration methods
         with patch.object(self.controller.integration, 'is_running', False):
-            result = self.controller.start_scraping("http://example.com", max_depth=3)
-            
-            self.assertTrue(result)
-            mock_thread.assert_called_once()
-            mock_thread_instance.start.assert_called_once()
+            with patch.object(self.controller.integration, 'start_progressive_scraping') as mock_start:
+                result = self.controller.start_scraping("http://example.com", max_depth=3)
+
+                self.assertTrue(result)
+                # Verify that progressive scraping was started
+                mock_start.assert_called_once()
             
     def test_start_scraping_already_running(self):
         """Test starting scraping when already running"""
